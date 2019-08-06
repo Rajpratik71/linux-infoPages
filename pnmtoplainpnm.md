@@ -1,0 +1,24 @@
+File: *manpages*,  Node: pnmtoplainpnm,  Up: (dir)
+
+Pnmtoplainpnm User Manual(0)                      Pnmtoplainpnm User Manual(0)
+
+
+
+NAME
+       pnmtoplainpnm - replaced by pnmtopnm
+
+DESCRIPTION
+       This program is part of Netpbm(1)
+
+       pnmtoplainpnm  was obsoleted in Netpbm 10.23 (July 2004) by pnmtopnm(1)
+       -plain.
+
+       pnmtoplainpnm exists today for backward compatibility; all it  does  is
+       call pnmtopnm -plain.
+
+       pnmtoplainpnm  was new in Netpbm 8.2 (March 2000) as a renaming of pnm-
+       noraw, which was new in Pbmplus in November 1989.
+
+
+
+netpbm documentation               July 2004      Pnmtoplainpnm User Manual(0)

@@ -1,0 +1,89 @@
+File: libc.info,  Node: Using Getopt,  Next: Example of Getopt,  Up: Getopt
+
+25.2.1 Using the `getopt' function
+----------------------------------
+
+Here are the details about how to call the `getopt' function.  To use
+this facility, your program must include the header file `unistd.h'.  
+
+ -- Variable: int opterr
+     If the value of this variable is nonzero, then `getopt' prints an
+     error message to the standard error stream if it encounters an
+     unknown option character or an option with a missing required
+     argument.  This is the default behavior.  If you set this variable
+     to zero, `getopt' does not print any messages, but it still
+     returns the character `?' to indicate an error.
+
+ -- Variable: int optopt
+     When `getopt' encounters an unknown option character or an option
+     with a missing required argument, it stores that option character
+     in this variable.  You can use this for providing your own
+     diagnostic messages.
+
+ -- Variable: int optind
+     This variable is set by `getopt' to the index of the next element
+     of the ARGV array to be processed.  Once `getopt' has found all of
+     the option arguments, you can use this variable to determine where
+     the remaining non-option arguments begin.  The initial value of
+     this variable is `1'.
+
+ -- Variable: char * optarg
+     This variable is set by `getopt' to point at the value of the
+     option argument, for those options that accept arguments.
+
+ -- Function: int getopt (int ARGC, char *const *ARGV, const char
+          *OPTIONS)
+     Preliminary: | MT-Unsafe race:getopt env | AS-Unsafe heap i18n
+     lock corrupt | AC-Unsafe mem lock corrupt | *Note POSIX Safety
+     Concepts::.
+
+     The `getopt' function gets the next option argument from the
+     argument list specified by the ARGV and ARGC arguments.  Normally
+     these values come directly from the arguments received by `main'.
+
+     The OPTIONS argument is a string that specifies the option
+     characters that are valid for this program.  An option character
+     in this string can be followed by a colon (`:') to indicate that
+     it takes a required argument.  If an option character is followed
+     by two colons (`::'), its argument is optional; this is a GNU
+     extension.
+
+     `getopt' has three ways to deal with options that follow
+     non-options ARGV elements.  The special argument `--' forces in
+     all cases the end of option scanning.
+
+        * The default is to permute the contents of ARGV while scanning
+          it so that eventually all the non-options are at the end.
+          This allows options to be given in any order, even with
+          programs that were not written to expect this.
+
+        * If the OPTIONS argument string begins with a hyphen (`-'),
+          this is treated specially.  It permits arguments that are not
+          options to be returned as if they were associated with option
+          character `\1'.
+
+        * POSIX demands the following behavior: The first non-option
+          stops option processing.  This mode is selected by either
+          setting the environment variable `POSIXLY_CORRECT' or
+          beginning the OPTIONS argument string with a plus sign (`+').
+
+     The `getopt' function returns the option character for the next
+     command line option.  When no more option arguments are available,
+     it returns `-1'.  There may still be more non-option arguments; you
+     must compare the external variable `optind' against the ARGC
+     parameter to check this.
+
+     If the option has an argument, `getopt' returns the argument by
+     storing it in the variable OPTARG.  You don't ordinarily need to
+     copy the `optarg' string, since it is a pointer into the original
+     ARGV array, not into a static area that might be overwritten.
+
+     If `getopt' finds an option character in ARGV that was not
+     included in OPTIONS, or a missing option argument, it returns `?'
+     and sets the external variable `optopt' to the actual option
+     character.  If the first character of OPTIONS is a colon (`:'),
+     then `getopt' returns `:' instead of `?' to indicate a missing
+     option argument.  In addition, if the external variable `opterr'
+     is nonzero (which is the default), `getopt' prints an error
+     message.
+

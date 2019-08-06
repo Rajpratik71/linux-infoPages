@@ -1,0 +1,54 @@
+File: *manpages*,  Node: pktopbm,  Up: (dir)
+
+Pktopbm User Manual(0)                                  Pktopbm User Manual(0)
+
+
+
+NAME
+       pktopbm - convert packed (PK) format font into PBM
+
+
+SYNOPSIS
+       pktopbm pkfile[.pk] [ -x width ] [ -y height ] [-c num] pbmfile ...
+
+
+DESCRIPTION
+       This program is part of Netpbm(1)
+
+       pktopbm reads a packed (PK) font file as input, and produces PBM images
+       as output. If the filename '-' is used for any of  the  filenames,  the
+       standard  input  stream  (or standard output where appropriate) will be
+       used. If either the width or height is specified, this  value  will  be
+       used  for  all  bitmaps produced. Also if one or both values are speci-
+       fied, the bitmap will be relocated with the hoffset and  voffset  given
+       in the pkfile. The basepoint will be placed in the lower left corner of
+       the bitmap if the bitmap is bigger than the specified size it  will  be
+       truncated at the top or right.
+
+
+OPTIONS
+       -c num Sets the character number of the next bitmap written to num.
+
+
+       -x width
+              Sets the width of the image in columns.
+
+
+       -y width
+              Sets the height of the image in rows.
+
+
+
+
+SEE ALSO
+       pbmtopk(1) , pbm(5)
+
+
+
+AUTHOR
+       Adapted  from Tom Rokicki's pxtopk by Angus Duggan <ajcd@dcs.ed.ac.uk>.
+       <bartel@informatik.tu-muenchen.de> in March 1995.
+
+
+
+netpbm documentation             6 August 1990          Pktopbm User Manual(0)

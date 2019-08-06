@@ -1,0 +1,32 @@
+File: *manpages*,  Node: gouldtoppm,  Up: (dir)
+
+Gouldtoppm User Manual(0)                            Gouldtoppm User Manual(0)
+
+
+
+NAME
+       gouldtoppm - convert Gould scanner file into a PPM image
+
+
+SYNOPSIS
+       gouldtoppm [gouldfile]
+
+
+DESCRIPTION
+       This program is part of Netpbm(1)
+
+       gouldtoppm reads a file produced by the Gould scanner as input and pro-
+       duces a PPM image as output.
+
+
+SEE ALSO
+       ppm(5)
+
+
+
+AUTHOR
+       Copyright(C) 1990 by Stephen Paul Lesniewski
+
+
+
+netpbm documentation              20 May 1990        Gouldtoppm User Manual(0)

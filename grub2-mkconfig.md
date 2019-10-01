@@ -1,0 +1,29 @@
+File: *manpages*,  Node: grub2-mkconfig,  Up: (dir)
+
+GRUB-MKCONFIG(1)            General Commands Manual           GRUB-MKCONFIG(1)
+
+
+
+NAME
+       grub-mkconfig — Generate a GRUB configuration file.
+
+
+SYNOPSIS
+       grub-mkconfig [-o | --output=FILE]
+
+
+DESCRIPTION
+       grub-mkconfig generates a configuration file for GRUB.
+
+
+OPTIONS
+       --output=FILE
+              Write generated output to FILE.
+
+
+SEE ALSO
+       info grub
+
+
+
+                                Wed Feb 26 2014               GRUB-MKCONFIG(1)

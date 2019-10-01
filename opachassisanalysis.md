@@ -1,0 +1,300 @@
+File: *manpages*,  Node: opachassisanalysis,  Up: (dir)
+
+
+opachassisanalysis(8)        IFSFFCLIRG (Man Page)       opachassisanalysis(8)
+
+
+
+NAME
+       opachassisanalysis
+
+
+
+       (Switch) Performs analysis of the chassis.
+
+       The opachassisanalysis tool checks the following for the Intel(R) Omni-
+       Path Fabric Chassis:
+
+       ·      Chassis configuration (as reported by the chassis commands spec‐
+              ified in FF_CHASSIS_CMDS in opafastfabric.conf).
+
+       ·      Chassis  health (as reported by the chassis command specified in
+              FF_CHASSIS_HEALTH in opafastfabric.conf).
+
+Syntax
+       opachassisanalysis [-b|-e] [-s] [-d dir] [-F chassisfile]
+       [-H 'chassis']
+
+Options
+       --help    Produces full help text.
+
+       -b        Specifies the baseline mode.  Default  is  the  compare/check
+                 mode.
+
+       -e        Evaluates health only. Default is the compare/check mode.
+
+       -s        Saves history of failures (errors/differences).
+
+       -d dir    Specifies  the  top-level  directory  for saving baseline and
+                 history of failed checks. Default is  /var/usr/lib/opa/analy‐
+                 sis
+
+       -F chassisfile
+                 Specifies  the  file with the chassis in the cluster. Default
+                 is /etc/opa/chassis
+
+       -H 'chassis'
+                 Specifies the list of chassis on which to  execute  the  com‐
+                 mand.
+
+Example
+       opachassisanalysis
+
+Environment Variables
+       The following environment variables are also used by this command:
+
+       CHASSIS   List of chassis, used if -F and -H options are not supplied.
+
+       CHASSIS_FILE
+                 File  containing  list  of chassis, used if -F and -H options
+                 are not supplied.
+
+       FF_ANALYSIS_DIR
+                 Top-level directory for baselines and failed health checks.
+
+       FF_CHASSIS_CMDS
+                 List of commands to  issue  during  analysis,  unused  if  -e
+                 option supplied.
+
+
+       FF_CHASSIS_HEALTH
+                 Single command to issue to check overall health during analy‐
+                 sis, unused if -b option supplied.
+
+
+Details
+       Intel recommends that you set up SSH keys for chassis (see  opasetupssh
+       ).  If SSH keys are not set up, all chassis must be configured with the
+       same  admin  password  and  the  password   must   be   kept   in   the
+       /etc/opa/opafastfabric.conf configuration file.
+
+       The default set of FF_CHASSIS_CMDS is:
+
+       showInventory fwVersion showNodeDesc timeZoneConf timeDSTConf
+       snmpCommunityConf snmpTargetAddr showChassisIpAddr showDefaultRoute
+
+
+
+       The  commands specified in FF_CHASSIS_CMDS must be simple commands with
+       no arguments. The output of these commands are compared to the baseline
+       using  FF_DIFF_CMD. Therefore, commands that include dynamically chang‐
+       ing values, such as port packet counters, should  not  be  included  in
+       this list.
+
+       FF_CHASSIS_HEALTH  can  specify one command (with arguments) to be used
+       to check the chassis health.  For  chassis  with  newer  firmware,  the
+       hwCheck  command  is  recommended.  For  chassis with older firmware, a
+       benign command, such  as  fruInfo,  should  be  used.  The  default  is
+       hwCheck.  Note  that only the exit status of the FF_CHASSIS_HEALTH com‐
+       mand is checked. The output is not captured and compared in a snapshot.
+       However, on failure its output is saved to aid diagnosis.
+
+       The  opachassisanalysis  tool performs its analysis against one or more
+       chassis in the fabric. As such, it permits the chassis to be  specified
+       using the -H, -F, CHASSIS, chassis_file or opafastfabric.conf. The han‐
+       dling of these options and settings is comparable to opacmdall  -C  and
+       similar FastFabric Toolset commands against a chassis.
+
+       All  files  generated  by  opafabricanalysis start with chassis. in the
+       file name.
+
+       The opachassisanalysis tool  generates  files  such  as  the  following
+       within  FF_ANALYSIS_DIR.  The  actual file names reflect the individual
+       chassis  commands  that  have  been  configured  through  the  FF_CHAS‐
+       SIS_HEALTH and FF_CHASSIS_CMDS parameters:
+
+       Health Check
+
+
+       ·      latest/chassis.hwCheck   Output   of  hwCheck  command  for  all
+              selected chassis
+
+
+       Baseline: During a baseline run, the following files are  also  created
+       in FF_ANALYSIS_DIR /latest.
+
+       ·      baseline/chassis.fwVersion  Output  of fwVersion command for all
+              selected chassis.
+
+
+       ·      baseline/chassis.showChassisIpAddr Output of  the  showChassisI‐
+              pAddr. command for all selected chassis.
+
+
+       ·      baseline/chassis.showDefaultRoute Output of the showDefaultRoute
+              command for all selected chassis.
+
+
+       ·      baseline/chassis.showNodeDesc Output of the showNodeDesc command
+              for all selected chassis.
+
+
+       ·      baseline/chassis.showInventory  Output of the showInventory com‐
+              mand for all selected chassis.
+
+
+       ·      baseline/chassis.snmpCommunityConf Output of the  snmpCommunity‐
+              Conf command for all selected chassis.
+
+
+       ·      baseline/chassis.snmpTargetAddr  Output  of  the  snmpTargetAddr
+              command for all selected chassis.
+
+
+       ·      baseline/chassis.timeDSTConf Output of the  timeDSTConf  command
+              for all selected chassis.
+
+
+       ·      baseline/chassis.timeZoneConf Output of the timeZoneConf command
+              for all selected chassis.
+
+
+       Full Analysis: The following .diff files are only  created  if  differ‐
+       ences are detected.
+
+       ·      latest/chassis.hwCheck  Output  of  the  hwCheck command for all
+              selected chassis.
+
+
+       ·      latest/chassis.fwVersion Output of the fwVersion command for all
+              selected chassis.
+
+
+       ·      latest/chassis.fwVersion.diff  diff  of  the baseline and latest
+              fwVersion.
+
+
+       ·      latest/chassis.showChassisIpAddr Output of the showChassisIpAddr
+              command for all selected chassis.
+
+
+       ·      latest/chassis.showChassisIpAddr.diff  diff of baseline and lat‐
+              est showChassisIpAddr.
+
+
+       ·      latest/chassis.showDefaultRoute Output of  the  showDefaultRoute
+              command for all selected chassis.
+
+
+       ·      latest/chassis.showDefaultRoute.diff  diff  of  the baseline and
+              the latest showDefaultRoute.
+
+
+       ·      latest/chassis.showNodeDesc Output of the  showNodeDesc  command
+              for all selected chassis.
+
+
+       ·      latest/chassis.showNodeDesc.diff diff of the baseline and latest
+              showNodeDesc.
+
+
+       ·      latest/chassis.showInventory Output of the showInventory command
+              for all selected chassis.
+
+
+       ·      latest/chassis.showInventory.diff  diff of the baseline and lat‐
+              est showInventory.
+
+
+       ·      latest/chassis.snmpCommunityConf Output of the snmpCommunityConf
+              command for all selected chassis.
+
+
+       ·      latest/chassis.snmpCommunityConf.diff  diff  of the baseline and
+              latest snmpCommunityConf.
+
+
+       ·      latest/chassis.snmpTargetAddr Output of the snmpTargetAddr  com‐
+              mand for all selected chassis.
+
+
+       ·      latest/chassis.snmpTargetAddr.diff diff of the baseline and lat‐
+              est snmpTargetAddr.
+
+
+       ·      latest/chassis.timeDSTConf Output of the timeDSTConf command for
+              all selected chassis.
+
+
+       ·      latest/chassis.timeDSTConf.diff  diff of the baseline and latest
+              timeDSTConf.
+
+
+       ·      latest/chassis.timeZoneConf Output of the  timeZoneConf  command
+              for all selected chassis.
+
+
+       ·      latest/chassis.timeZoneConf.diff diff of the baseline and latest
+              timeZonfConf.
+
+
+       If the -s option is used and failures are detected,  files  related  to
+       the checks that failed are also copied to a time-stamped directory name
+       under FF_ANALYSIS_DIR.
+
+Chassis Items Checked Against the Baseline
+       Based upon showInventory :
+
+       ·      Addition/removal of Chassis FRUsReplacement is only checked  for
+              FRUs that showInventory displays the serial number.
+
+
+       ·      Removal of redundant FRUs (spines, power supply, fan)
+
+       Based upon fwVersion:
+
+       ·      Changes  to  primary or alternate FW versions installed in cards
+              in chassis.
+
+       Based upon showNodeDesc:
+
+       ·      Changes to configured node description for chassis. Note changes
+              detected here would also be detected in fabric level analysis.
+
+       Based upon timeZoneConf and timeDSTConf:
+
+       ·      Changes  to the chassis time zone and daylight savings time con‐
+              figuration.
+
+       Based upon snmpCommunityConf and snmpTargetAddr:
+
+       ·      Changes to SNMP persistent configuration within the chassis.
+
+       The following Chassis items are not checked against baseline:
+
+       ·      Changes to the chassis configuration on the management LAN  (for
+              example, showChassisIpAddr, showDefaultRoute). Such changes typ‐
+              ically result in the chassis not responding on the  LAN  at  the
+              expected address that is detected by failures that perform other
+              chassis checks.
+
+Chassis Items Also Checked During Health Check
+       Based upon hwCheck:
+
+       ·      Overall health of FRUs in chassis:
+
+       ·      Status of Fans in chassis
+
+       ·      Status of Power Supplies in chassis
+
+       ·      Temp/Voltage for each card
+
+       ·      Presence of adequate power/cooling of FRUs
+
+       ·      Presence of N+1 power/cooling of FRUs
+
+       ·      Presence of Redundant AC input
+
+
+
+Copyright(C) 2015-2018         Intel Corporation         opachassisanalysis(8)

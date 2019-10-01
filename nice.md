@@ -1,0 +1,115 @@
+File: libc.info,  Node: Traditional Scheduling Functions,  Prev: Traditional Scheduling Intro,  Up: Traditional Scheduling
+
+22.3.4.2 Functions For Traditional Scheduling
+.............................................
+
+This section describes how you can read and set the nice value of a
+process.  All these symbols are declared in 'sys/resource.h'.
+
+   The function and macro names are defined by POSIX, and refer to
+"priority," but the functions actually have to do with nice values, as
+the terms are used both in the manual and POSIX.
+
+   The range of valid nice values depends on the kernel, but typically
+it runs from '-20' to '20'.  A lower nice value corresponds to higher
+priority for the process.  These constants describe the range of
+priority values:
+
+'PRIO_MIN'
+     The lowest valid nice value.
+
+'PRIO_MAX'
+     The highest valid nice value.
+
+ -- Function: int getpriority (int CLASS, int ID)
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     Return the nice value of a set of processes; CLASS and ID specify
+     which ones (see below).  If the processes specified do not all have
+     the same nice value, this returns the lowest value that any of them
+     has.
+
+     On success, the return value is '0'.  Otherwise, it is '-1' and
+     'ERRNO' is set accordingly.  The 'errno' values specific to this
+     function are:
+
+     'ESRCH'
+          The combination of CLASS and ID does not match any existing
+          process.
+
+     'EINVAL'
+          The value of CLASS is not valid.
+
+     If the return value is '-1', it could indicate failure, or it could
+     be the nice value.  The only way to make certain is to set 'errno =
+     0' before calling 'getpriority', then use 'errno != 0' afterward as
+     the criterion for failure.
+
+ -- Function: int setpriority (int CLASS, int ID, int NICEVAL)
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     Set the nice value of a set of processes to NICEVAL; CLASS and ID
+     specify which ones (see below).
+
+     The return value is '0' on success, and '-1' on failure.  The
+     following 'errno' error condition are possible for this function:
+
+     'ESRCH'
+          The combination of CLASS and ID does not match any existing
+          process.
+
+     'EINVAL'
+          The value of CLASS is not valid.
+
+     'EPERM'
+          The call would set the nice value of a process which is owned
+          by a different user than the calling process (i.e., the target
+          process' real or effective uid does not match the calling
+          process' effective uid) and the calling process does not have
+          'CAP_SYS_NICE' permission.
+
+     'EACCES'
+          The call would lower the process' nice value and the process
+          does not have 'CAP_SYS_NICE' permission.
+
+   The arguments CLASS and ID together specify a set of processes in
+which you are interested.  These are the possible values of CLASS:
+
+'PRIO_PROCESS'
+     One particular process.  The argument ID is a process ID (pid).
+
+'PRIO_PGRP'
+     All the processes in a particular process group.  The argument ID
+     is a process group ID (pgid).
+
+'PRIO_USER'
+     All the processes owned by a particular user (i.e., whose real uid
+     indicates the user).  The argument ID is a user ID (uid).
+
+   If the argument ID is 0, it stands for the calling process, its
+process group, or its owner (real uid), according to CLASS.
+
+ -- Function: int nice (int INCREMENT)
+     Preliminary: | MT-Unsafe race:setpriority | AS-Unsafe | AC-Safe |
+     *Note POSIX Safety Concepts::.
+
+     Increment the nice value of the calling process by INCREMENT.  The
+     return value is the new nice value on success, and '-1' on failure.
+     In the case of failure, 'errno' will be set to the same values as
+     for 'setpriority'.
+
+     Here is an equivalent definition of 'nice':
+
+          int
+          nice (int increment)
+          {
+            int result, old = getpriority (PRIO_PROCESS, 0);
+            result = setpriority (PRIO_PROCESS, 0, old + increment);
+            if (result != -1)
+                return old + increment;
+            else
+                return -1;
+          }
+

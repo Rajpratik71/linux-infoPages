@@ -1,0 +1,22 @@
+File: *manpages*,  Node: system-config-abrt,  Up: (dir)
+
+SYSTEM-CONFIG-ABRT(1)             ABRT Manual            SYSTEM-CONFIG-ABRT(1)
+
+
+
+NAME
+       system-config-abrt - GUI tool to configure ABRT
+
+SYNOPSIS
+       system-config-abrt
+
+DESCRIPTION
+       system-config-abrt is a graphical tool that provides to users
+       comfortable way for changing ABRT’s configuration files from one place.
+
+AUTHORS
+       ·   ABRT team
+
+
+
+abrt 2.1.11                       08/12/2019             SYSTEM-CONFIG-ABRT(1)
